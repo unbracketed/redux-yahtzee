@@ -1,20 +1,20 @@
 var getConfig = require('hjs-webpack')
 
-
-module.exports = getConfig({
-  // entry point for the app
+var config = getConfig({
   in: 'src/app.js',
-
-  // Name or full path of output directory
-  // commonly named `www` or `public`. This
-  // is where your fully static site should
-  // end up for simple deployment.
   out: 'public',
-
-  // This will destroy and re-create your
-  // `out` folder before building so you always
-  // get a fresh folder. Usually you want this
-  // but since it's destructive we make it
-  // false by default
   clearBeforeBuild: true
 })
+
+//Enable stage 0 for Babel
+config.module.loaders.forEach(function (filter) {
+  if (filter.loaders) {
+    filter.loaders.forEach(function(loader, idx, arr) {
+      if (loader === 'babel-loader') {
+        arr[idx] = 'babel-loader?stage=0'
+      }
+    })
+  }
+})
+
+module.exports = config

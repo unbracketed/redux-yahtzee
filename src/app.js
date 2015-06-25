@@ -7,8 +7,6 @@ import { GameBoard } from './components'
 
 
 const redux = createRedux({game: gameReducers});
-redux.dispatch(actions.roll())
-
 
 class GameApp {
   render() {

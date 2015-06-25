@@ -4,7 +4,7 @@ import * as constants from './constants'
 const initialState = {
   score: 0,
   heldDice: [],
-  dice: [1, 2, 3, 4, 5]
+  dice: []
 }
 
 
@@ -20,6 +20,13 @@ export default function game (state=initialState, action) {
         ...state,
         heldDice: [],
         dice
+      }
+
+    case constants.RESET_GAME:
+      return {
+        score: 0,
+        heldDice: [],
+        dice: []
       }
 
     default:

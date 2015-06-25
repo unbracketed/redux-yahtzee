@@ -27,10 +27,41 @@ class Scoring {
 }
 
 
+class Tally {
+  render() {
+    const { scoring } = this.props
+    return (
+      <table>
+        <tbody>
+          <tr>
+            <td>Ones</td><td>{scoring.ones}</td>
+          </tr>
+          <tr>
+            <td>Twos</td><td>{scoring.twos}</td>
+          </tr>
+          <tr>
+            <td>Threes</td><td>{scoring.threes}</td>
+          </tr>
+          <tr>
+            <td>Fours</td><td>{scoring.fours}</td>
+          </tr>
+          <tr>
+            <td>Fives</td><td>{scoring.fives}</td>
+          </tr>
+          <tr>
+            <td>Sixes</td><td>{scoring.sixes}</td>
+          </tr>
+        </tbody>
+      </table>
+    )
+  }
+}
+
+
 @connect(state => state.game)
 export class GameBoard {
   render() {
-    const { dice, dispatch, rolls, score } = this.props
+    const { dice, dispatch, rolls, score, scoring } = this.props
     const { roll, reset, score_ones } = bindActionCreators(actions, dispatch)
 
     let gameContent = null
@@ -58,6 +89,9 @@ export class GameBoard {
         </div>
         <div>
           {gameContent}
+        </div>
+        <div>
+          <Tally scoring={scoring}/>
         </div>
       </div>
     )

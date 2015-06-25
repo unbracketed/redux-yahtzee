@@ -2,17 +2,25 @@ import React, {Component} from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'redux/react';
 import * as actions from './actions'
-import Dice from './components'
+import { GameBoard } from './components'
 
-// @connect
-class GameApp extends Component {
+import { createRedux } from 'redux';
+import { Provider } from 'redux/react';
+import  * as stores from './stores';
+
+console.log(stores);
+
+const redux = createRedux(stores);
+console.log('REDUX', redux);
+
+redux.dispatch(actions.roll())
+
+class GameApp {
   render() {
-    const {dice, dispatch} = this.props
     return (
-      <Dice
-        dice={dice}
-        {...bindActionCreators(actions, dispatch)}
-      />
+      <Provider redux={redux}>
+        {() => <GameBoard/>}
+      </Provider>
     )
   }
 }

@@ -17,26 +17,33 @@ class Dice {
 }
 
 
-@connect(state => ({
-  dice: state.game.dice
-}))
+@connect(state => state.game)
 export class GameBoard {
   render() {
-    const { dice, dispatch } = this.props
-    const { roll, reset } = bindActionCreators(actions, dispatch)
+    const { dice, dispatch, rolls, score } = this.props
+    const { roll, reset, score_ones } = bindActionCreators(actions, dispatch)
 
     let gameContent = null
     if (! dice.length) {
-      gameContent = <div>Roll to begin</div>
+      if (! score) {
+        gameContent = <div>Roll to begin</div>
+      } else {
+        gameContent = <div>Roll again</div>
+      }
     }
     else {
       gameContent = <Dice dice={this.props.dice}/>
     }
+
+    const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll</button>
+
     return (
       <div>
         <div>
-          <button onClick={roll}>Roll</button>
+          {rollButton}
           <button onClick={reset}>Reset</button>
+          <div>{score}</div>
+          <button onClick={score_ones}>Ones</button>
         </div>
         <div>
           {gameContent}

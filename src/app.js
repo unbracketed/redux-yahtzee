@@ -1,19 +1,14 @@
-import React, {Component} from 'react'
-import { bindActionCreators } from 'redux';
-import { connect } from 'redux/react';
-import * as actions from './actions'
-import { GameBoard } from './components'
-
+import React from 'react'
 import { createRedux } from 'redux';
 import { Provider } from 'redux/react';
-import  * as stores from './stores';
+import * as actions from './actions'
+import  gameReducers from './stores';
+import { GameBoard } from './components'
 
-console.log(stores);
 
-const redux = createRedux(stores);
-console.log('REDUX', redux);
-
+const redux = createRedux({game: gameReducers});
 redux.dispatch(actions.roll())
+
 
 class GameApp {
   render() {
@@ -24,5 +19,6 @@ class GameApp {
     )
   }
 }
+
 
 React.render(<GameApp/>, document.body)

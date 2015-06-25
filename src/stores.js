@@ -16,7 +16,6 @@ function resetTurn() {
   }
 }
 
-//TODO don't show scoring buttons until roll
 //TODO remove scoring button once used
 
 export default function game (state=initialState, action) {
@@ -44,7 +43,7 @@ export default function game (state=initialState, action) {
       return {
         ...state,
         ...resetTurn(),
-        score: _.sum(_.filter(state.dice, n => n === 1))
+        score: state.score + _.sum(_.filter(state.dice, n => n === 1))
       }
 
     default:

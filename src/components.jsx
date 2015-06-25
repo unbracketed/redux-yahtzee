@@ -17,6 +17,16 @@ class Dice {
 }
 
 
+class Scoring {
+  render() {
+      const { score_ones } = this.props
+      return (
+          <button onClick={score_ones}>Ones</button>
+      )
+  }
+}
+
+
 @connect(state => state.game)
 export class GameBoard {
   render() {
@@ -36,6 +46,7 @@ export class GameBoard {
     }
 
     const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll</button>
+    const scoringButtons = rolls > 0 ? <Scoring score_ones={score_ones}/> : ''
 
     return (
       <div>
@@ -43,7 +54,7 @@ export class GameBoard {
           {rollButton}
           <button onClick={reset}>Reset</button>
           <div>{score}</div>
-          <button onClick={score_ones}>Ones</button>
+          {scoringButtons}
         </div>
         <div>
           {gameContent}

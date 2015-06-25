@@ -3,7 +3,8 @@ var getConfig = require('hjs-webpack')
 var config = getConfig({
   in: 'src/app.js',
   out: 'public',
-  clearBeforeBuild: true
+  clearBeforeBuild: true,
+  port: process.env.PORT
 })
 
 //Enable stage 0 for Babel

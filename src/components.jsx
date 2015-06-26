@@ -4,7 +4,7 @@ import { connect } from 'redux/react'
 import * as actions from './actions'
 import _defaultStyles from './main.styl'
 import _diceStyles from './dice.css'
-
+import _gridStyles from './grid.css'
 
 class Die {
   render() {
@@ -82,7 +82,7 @@ class Dice {
   render() {
     const { dice } = this.props
     return (
-      <div className="dice">
+      <div className="dice" style={{flex: '1 0 auto'}}>
         {dice.map((val, idx) => <Die key={idx} number={val}/>)}
       </div>
     )
@@ -153,17 +153,15 @@ export class GameBoard {
     const scoringButtons = rolls > 0 ? <Scoring score_ones={score_ones}/> : ''
 
     return (
-      <div>
-        <div>
+      <div className="Grid" id="main">
+        <div className="Grid-cell play-column">
           {rollButton}
-          <button onClick={reset}>Reset</button>
-          <div>{score}</div>
+          <button onClick={reset}>Start Over</button>
           {scoringButtons}
-        </div>
-        <div>
           {gameContent}
         </div>
-        <div>
+        <div className="Grid-cell Grid--1of3">
+          <div id="score">Score: {score}</div>
           <Tally scoring={scoring}/>
         </div>
       </div>

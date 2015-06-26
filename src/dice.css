@@ -75,7 +75,15 @@ body {
   flex-wrap: wrap;
   align-content: center;
   font-family: 'Open Sans', sans-serif;
-  background: linear-gradient(top, #222, #333);
+  background: linear-gradient(top, darkgreen, lightgreen);
+  bottom: 0px
+}
+.dice::after {
+  content: '\00a0';
+  display: block;
+  margin-top: 1em;
+  height: 0;
+  visibility: hidden;
 }
 
 [class$="face"] {

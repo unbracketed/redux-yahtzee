@@ -91,15 +91,13 @@ class Dice {
     return (
         <div className="dice">
           {dice.map(function (val, idx) {
-            console.log('checking held', _.contains(heldDice, idx))
             const cn = classNames(
               'die-container',
               {isHeld: _.contains(heldDice,idx)}
             )
             return  (
-              <div className={cn}>
+              <div className={cn} key={idx}>
                 <Die
-                  key={idx}
                   number={val}
                   onClick={hold.bind(null, idx)}/>
               </div>
@@ -108,16 +106,6 @@ class Dice {
           {rollButton}
         </div>
     )
-  }
-}
-
-
-class Scoring {
-  render() {
-      const { score_ones } = this.props
-      return (
-          <button onClick={score_ones}>Ones</button>
-      )
   }
 }
 
@@ -135,25 +123,68 @@ class Tally {
       numDisplay = scoring[key]
     }
 
-    return (
-      <tr key={key}>
-        <td>{key.charAt(0).toUpperCase() + key.substring(1)}</td>
-        <td>{numDisplay}</td>
-      </tr>
-    )
+    return numDisplay
   }
 
   render() {
     const { scoring, scoreMarkers, isNewTurn } = this.props
-    const nums = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes']
-
 
     return (
-      <table>
-        <tbody>
-          {nums.map(n => this.getNumberDisplay(n, scoring, isNewTurn, scoreMarkers))}
-        </tbody>
-      </table>
+      <div>
+
+        <h2>UPPER SECTION</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td>Aces = 1</td><td>Count and Add Only Aces</td><td>{this.getNumberDisplay('ones', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+            <tr>
+              <td>Twos = 2</td><td>Count and Add Only Twos</td><td>{this.getNumberDisplay('twos', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+            <tr>
+              <td>Threes = 3</td><td>Count and Add Only Threes</td><td>{this.getNumberDisplay('threes', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+            <tr>
+              <td>Fours = 4</td><td>Count and Add Only Fours</td><td>{this.getNumberDisplay('fours', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+            <tr>
+              <td>Fives = 5</td><td>Count and Add Only Fives</td><td>{this.getNumberDisplay('fives', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+            <tr>
+              <td>Sixes = 6</td><td>Count and Add Only Sixes</td><td>{this.getNumberDisplay('sixes', scoring, isNewTurn, scoreMarkers)}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>LOWER SECTION</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td>3 of a kind</td><td>Add Total Of All Dice</td><td></td>
+            </tr>
+            <tr>
+              <td>4 of a kind</td><td>Add Total Of All Dice</td><td></td>
+            </tr>
+            <tr>
+              <td>Full House</td><td>SCORE 25</td><td></td>
+            </tr>
+            <tr>
+              <td>Sm. Straight (sequence of 4)</td><td>SCORE 30</td><td></td>
+            </tr>
+            <tr>
+              <td>Sm. Straight (sequence of 5)</td><td>SCORE 40</td><td></td>
+            </tr>
+            <tr>
+              <td>REDUXEE</td><td>SCORE 50</td><td></td>
+            </tr>
+            <tr>
+              <td>Chance</td><td>Score Total Of All 5 Dice</td><td></td>
+            </tr>
+
+
+          </tbody>
+        </table>
+    </div>
     )
   }
 }

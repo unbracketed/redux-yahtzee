@@ -48,7 +48,8 @@ export default function game (state=initialState, action) {
   switch (action.type) {
 
     case constants.ROLL_DICE:
-      // TODO roll dice except held dice
+
+      //TODO handle yahtzee
 
       const dice = _.map(_.range(5), (i) => {
         if (_.contains(state.heldDice, i)) {
@@ -58,13 +59,21 @@ export default function game (state=initialState, action) {
         }
       })
 
+      const rolls = state.rolls + 1
+      let heldDice = null
+      //if the turn is over, mark all dice as held
+      if (rolls > 2) {
+        heldDice = _.range(5)
+      } else {
+        heldDice = state.heldDice
+      }
 
       return {
         ...state,
-        heldDice: [],
-        rolls: state.rolls + 1,
+        rolls,
         isNewTurn: false,
-        dice
+        dice,
+        heldDice
       }
 
     case constants.HOLD_DIE:

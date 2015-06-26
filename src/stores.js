@@ -60,11 +60,15 @@ export default function game (state=initialState, action) {
       }
 
     case constants.HOLD_DIE:
-      console.log('HOLD_DIE', action, state)
+      //copy the array, for redux shallow compare
       let newHelds = state.heldDice.slice()
-      newHelds.push(action.index)
-      console.log('held', newHelds)
-      //TODO unhold
+      if (_.contains(newHelds, action.index)) {
+        //remove held die
+        newHelds = _.filter(newHelds, i => i !== action.index)
+      } else {
+        //add to held dice
+        newHelds.push(action.index)
+      }
       return {
         ...state,
         heldDice: newHelds

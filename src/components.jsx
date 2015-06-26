@@ -104,29 +104,35 @@ class Scoring {
 
 
 class Tally {
+  getNumberDisplay(key, scoring, isNewTurn, scoreMarkers) {
+    let numDisplay = null
+    if (scoring[key] === null){
+      if (isNewTurn) {
+        numDisplay =  '-'
+      } else {
+        numDisplay = <button onClick={scoreMarkers['score_' + key]}>Score</button>
+      }
+    } else {
+      numDisplay = scoring[key]
+    }
+
+    return (
+      <tr>
+        <td>{key.charAt(0).toUpperCase() + key.substring(1)}</td>
+        <td>{numDisplay}</td>
+      </tr>
+    )
+  }
+
   render() {
-    const { scoring } = this.props
+    const { scoring, scoreMarkers, isNewTurn } = this.props
+    const nums = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes']
+
+
     return (
       <table>
         <tbody>
-          <tr>
-            <td>Ones</td><td>{scoring.ones}</td>
-          </tr>
-          <tr>
-            <td>Twos</td><td>{scoring.twos}</td>
-          </tr>
-          <tr>
-            <td>Threes</td><td>{scoring.threes}</td>
-          </tr>
-          <tr>
-            <td>Fours</td><td>{scoring.fours}</td>
-          </tr>
-          <tr>
-            <td>Fives</td><td>{scoring.fives}</td>
-          </tr>
-          <tr>
-            <td>Sixes</td><td>{scoring.sixes}</td>
-          </tr>
+          {nums.map(n => this.getNumberDisplay(n, scoring, isNewTurn, scoreMarkers))}
         </tbody>
       </table>
     )
@@ -137,8 +143,8 @@ class Tally {
 @connect(state => state.game)
 export class GameBoard {
   render() {
-    const { dice, dispatch, rolls, score, scoring } = this.props
-    const { roll, reset, score_ones } = bindActionCreators(actions, dispatch)
+    const { dice, dispatch, rolls, score, scoring, isNewTurn } = this.props
+    const { roll, reset, score_ones, score_twos } = bindActionCreators(actions, dispatch)
 
     let gameContent = null
     if (! dice.length) {
@@ -152,17 +158,14 @@ export class GameBoard {
       gameContent = <Dice dice={dice} roll={roll} rolls={rolls}/>
     }
 
-    const scoringButtons = rolls > 0 ? <Scoring score_ones={score_ones}/> : ''
-
     return (
       <div className="Grid" id="main">
         <div className="Grid-cell play-column">
-          {scoringButtons}
           {gameContent}
         </div>
         <div className="Grid-cell Grid--1of3">
           <div id="score">Score: {score}</div>
-          <Tally scoring={scoring}/>
+          <Tally scoring={scoring} scoreMarkers={bindActionCreators(actions, dispatch)} isNewTurn={isNewTurn}/>
         </div>
       </div>
     )

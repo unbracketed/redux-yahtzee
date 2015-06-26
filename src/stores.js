@@ -5,30 +5,46 @@ import * as constants from './constants'
 const initialState = {
   score: 0,
   scoring: {
-    ones: 0,
-    twos: 0,
-    threes: 0,
-    fours: 0,
-    fives: 0,
-    sixes: 0
+    ones: null,
+    twos: null,
+    threes: null,
+    fours: null,
+    fives: null,
+    sixes: null
   },
   heldDice: [],
   dice: [],
-  rolls: 0
+  rolls: 0,
+  isNewTurn: true
 }
 
 function resetTurn() {
   return {
     heldDice: [],
     dice: [],
-    rolls: 0
+    rolls: 0,
+    isNewTurn: true
   }
 }
 
-//TODO remove scoring button once used
+function scoreForNumber (state, key, num) {
+  const scoreFor = _.sum(_.filter(state.dice, n => n === num))
+  return {
+    ...state,
+    ...resetTurn(),
+    scoring: {
+      ...state.scoring,
+      [key]: scoreFor
+    },
+    score: state.score + scoreFor
+  }
+}
+
+
 //TODO hold dice
 
 export default function game (state=initialState, action) {
+
   switch (action.type) {
 
     case constants.ROLL_DICE:
@@ -39,6 +55,7 @@ export default function game (state=initialState, action) {
         ...state,
         heldDice: [],
         rolls: state.rolls + 1,
+        isNewTurn: false,
         dice
       }
 
@@ -50,16 +67,22 @@ export default function game (state=initialState, action) {
       }
 
     case constants.SCORE_ONES:
-      const scoreFor = _.sum(_.filter(state.dice, n => n === 1))
-      return {
-        ...state,
-        ...resetTurn(),
-        scoring: {
-          ...state.scoring,
-          ones: scoreFor
-        },
-        score: state.score + scoreFor
-      }
+      return scoreForNumber(state, 'ones', 1)
+
+    case constants.SCORE_TWOS:
+      return scoreForNumber(state, 'twos', 2)
+
+    case constants.SCORE_THREES:
+      return scoreForNumber(state, 'threes', 3)
+
+    case constants.SCORE_FOURS:
+      return scoreForNumber(state, 'fours', 4)
+
+    case constants.SCORE_FIVES:
+      return scoreForNumber(state, 'fives', 5)
+
+    case constants.SCORE_SIXES:
+      return scoreForNumber(state, 'sixes', 6)
 
     default:
       return state

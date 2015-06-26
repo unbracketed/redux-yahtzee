@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'redux/react'
+import classNames from 'classnames'
 import * as actions from './actions'
 import _defaultStyles from './main.styl'
 import _diceStyles from './dice.css'
@@ -9,23 +10,25 @@ import _gridStyles from './grid.css'
 
 class Die {
   render() {
+    const { onClick, isHeld } = this.props
+    console.log('DIE', this.props)
     switch (this.props.number) {
       case 1:
         return (
-          <div className="first-face">
+          <div className="first-face" onClick={onClick}>
             <span className="pip"></span>
           </div>
         )
       case 2:
         return (
-          <div className="second-face">
+          <div className="second-face" onClick={onClick}>
             <span className="pip"></span>
             <span className="pip"></span>
           </div>
         )
       case 3:
         return (
-          <div className="third-face">
+          <div className="third-face" onClick={onClick}>
             <span className="pip"></span>
             <span className="pip"></span>
             <span className="pip"></span>
@@ -33,7 +36,7 @@ class Die {
         )
       case 4:
         return (
-          <div className="fourth-face">
+          <div className="fourth-face" onClick={onClick}>
             <div className="column">
               <span className="pip"></span>
               <span className="pip"></span>
@@ -46,7 +49,7 @@ class Die {
         )
       case 5:
         return (
-          <div className="fifth-face">
+          <div className="fifth-face" onClick={onClick}>
             <div className="column">
               <span className="pip"></span>
               <span className="pip"></span>
@@ -62,7 +65,7 @@ class Die {
         )
       case 6:
         return (
-          <div className="sixth-face">
+          <div className="sixth-face" onClick={onClick}>
             <div className="column">
               <span className="pip"></span>
               <span className="pip"></span>
@@ -80,12 +83,28 @@ class Die {
 }
 
 class Dice {
+
   render() {
-    const { dice, roll, rolls } = this.props
+    const { dice, roll, rolls, hold, heldDice } = this.props
     const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll again</button>
+
     return (
         <div className="dice">
-          {dice.map((val, idx) => <Die key={idx} number={val}/>)}
+          {dice.map(function (val, idx) {
+            console.log('checking held', _.contains(heldDice, idx))
+            const cn = classNames(
+              'die-container',
+              {isHeld: _.contains(heldDice,idx)}
+            )
+            return  (
+              <div className={cn}>
+                <Die
+                  key={idx}
+                  number={val}
+                  onClick={hold.bind(null, idx)}/>
+              </div>
+            )
+          })}
           {rollButton}
         </div>
     )
@@ -117,7 +136,7 @@ class Tally {
     }
 
     return (
-      <tr>
+      <tr key={key}>
         <td>{key.charAt(0).toUpperCase() + key.substring(1)}</td>
         <td>{numDisplay}</td>
       </tr>
@@ -143,8 +162,9 @@ class Tally {
 @connect(state => state.game)
 export class GameBoard {
   render() {
-    const { dice, dispatch, rolls, score, scoring, isNewTurn } = this.props
-    const { roll, reset, score_ones, score_twos } = bindActionCreators(actions, dispatch)
+    console.log('GAMEBOARD', this.props)
+    const { dice, dispatch, rolls, score, scoring, isNewTurn, heldDice } = this.props
+    const { roll, reset, hold } = bindActionCreators(actions, dispatch)
 
     let gameContent = null
     if (! dice.length) {
@@ -155,7 +175,7 @@ export class GameBoard {
       }
     }
     else {
-      gameContent = <Dice dice={dice} roll={roll} rolls={rolls}/>
+      gameContent = <Dice dice={dice} roll={roll} rolls={rolls} hold={hold} heldDice={heldDice}/>
     }
 
     return (

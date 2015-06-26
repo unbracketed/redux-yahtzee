@@ -49,7 +49,7 @@ export default function game (state=initialState, action) {
 
     case constants.ROLL_DICE:
       // TODO roll dice except held dice
-      const dice = _.map(_.range(5), () => _.random(1,5))
+      const dice = _.map(_.range(5), () => _.random(1,6))
 
       return {
         ...state,
@@ -57,6 +57,17 @@ export default function game (state=initialState, action) {
         rolls: state.rolls + 1,
         isNewTurn: false,
         dice
+      }
+
+    case constants.HOLD_DIE:
+      console.log('HOLD_DIE', action, state)
+      let newHelds = state.heldDice.slice()
+      newHelds.push(action.index)
+      console.log('held', newHelds)
+      //TODO unhold
+      return {
+        ...state,
+        heldDice: newHelds
       }
 
     case constants.RESET_GAME:

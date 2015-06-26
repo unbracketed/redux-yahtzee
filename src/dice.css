@@ -73,6 +73,7 @@ body {
   justify-content: center;
   vertical-align: center;
   flex-wrap: wrap;
+  flex: 1 0 auto;
   align-content: center;
   font-family: 'Open Sans', sans-serif;
   background: linear-gradient(top, darkgreen, lightgreen);

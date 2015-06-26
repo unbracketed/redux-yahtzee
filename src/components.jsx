@@ -6,6 +6,7 @@ import _defaultStyles from './main.styl'
 import _diceStyles from './dice.css'
 import _gridStyles from './grid.css'
 
+
 class Die {
   render() {
     switch (this.props.number) {
@@ -80,11 +81,13 @@ class Die {
 
 class Dice {
   render() {
-    const { dice } = this.props
+    const { dice, roll, rolls } = this.props
+    const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll again</button>
     return (
-      <div className="dice" style={{flex: '1 0 auto'}}>
-        {dice.map((val, idx) => <Die key={idx} number={val}/>)}
-      </div>
+        <div className="dice">
+          {dice.map((val, idx) => <Die key={idx} number={val}/>)}
+          {rollButton}
+        </div>
     )
   }
 }
@@ -140,23 +143,20 @@ export class GameBoard {
     let gameContent = null
     if (! dice.length) {
       if (! score) {
-        gameContent = <div>Roll to begin</div>
+        gameContent = <div className="dice"><button onClick={roll}>Start Game</button></div>
       } else {
-        gameContent = <div>Roll again</div>
+        gameContent = <div className="dice"><button onClick={roll}>Roll next turn</button></div>
       }
     }
     else {
-      gameContent = <Dice dice={this.props.dice}/>
+      gameContent = <Dice dice={dice} roll={roll} rolls={rolls}/>
     }
 
-    const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll</button>
     const scoringButtons = rolls > 0 ? <Scoring score_ones={score_ones}/> : ''
 
     return (
       <div className="Grid" id="main">
         <div className="Grid-cell play-column">
-          {rollButton}
-          <button onClick={reset}>Start Over</button>
           {scoringButtons}
           {gameContent}
         </div>

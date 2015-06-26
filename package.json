@@ -1,8 +1,9 @@
 {
   "name": "redux-yahtzee",
-  "author": "",
+  "author": "Brian Luft",
   "version": "1.0.0",
   "description": "A Yahtzee-style dice game written using Redux",
+  "repository": "https://github.com/unbracketed/redux-yahtzee.git",
   "main": "src/app.js",
   "scripts": {
     "start": "webpack-dev-server",

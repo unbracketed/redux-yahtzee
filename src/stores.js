@@ -49,7 +49,15 @@ export default function game (state=initialState, action) {
 
     case constants.ROLL_DICE:
       // TODO roll dice except held dice
-      const dice = _.map(_.range(5), () => _.random(1,6))
+
+      const dice = _.map(_.range(5), (i) => {
+        if (_.contains(state.heldDice, i)) {
+          return state.dice[i]
+        } else {
+          return _.random(1,6)
+        }
+      })
+
 
       return {
         ...state,

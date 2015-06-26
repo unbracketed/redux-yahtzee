@@ -2,15 +2,88 @@ import React from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'redux/react'
 import * as actions from './actions'
+import _defaultStyles from './main.styl'
+import _diceStyles from './dice.css'
 
+
+class Die {
+  render() {
+    switch (this.props.number) {
+      case 1:
+        return (
+          <div className="first-face">
+            <span className="pip"></span>
+          </div>
+        )
+      case 2:
+        return (
+          <div className="second-face">
+            <span className="pip"></span>
+            <span className="pip"></span>
+          </div>
+        )
+      case 3:
+        return (
+          <div className="third-face">
+            <span className="pip"></span>
+            <span className="pip"></span>
+            <span className="pip"></span>
+          </div>
+        )
+      case 4:
+        return (
+          <div className="fourth-face">
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+          </div>
+        )
+      case 5:
+        return (
+          <div className="fifth-face">
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+            <div className="column">
+              <span className="pip"></span>
+            </div>
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+          </div>
+        )
+      case 6:
+        return (
+          <div className="sixth-face">
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+            <div className="column">
+              <span className="pip"></span>
+              <span className="pip"></span>
+              <span className="pip"></span>
+            </div>
+          </div>
+        )
+    }
+  }
+}
 
 class Dice {
   render() {
     const { dice } = this.props
     return (
-      <div>
-        Dice goes here
-        {dice.map((val, idx) => <div key={idx}>{val}</div>)}
+      <div className="dice">
+        {dice.map((val, idx) => <Die key={idx} number={val}/>)}
       </div>
     )
   }

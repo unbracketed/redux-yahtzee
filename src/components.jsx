@@ -1,80 +1,79 @@
 import React from 'react'
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux'
 import { connect } from 'redux/react'
 import classNames from 'classnames'
+import _ from 'lodash'
 import * as actions from './actions'
-import _defaultStyles from './styles/main.styl'
-import _diceStyles from './styles/dice.css'
-import _gridStyles from './styles/grid.css'
-
+import './styles/main.styl'
+import './styles/dice.css'
+import './styles/grid.css'
 
 class Die {
-  render() {
-    const { onClick, isHeld } = this.props
-    console.log('DIE', this.props)
+  render () {
+    const { onClick } = this.props
     switch (this.props.number) {
       case 1:
         return (
-          <div className="first-face" onClick={onClick}>
-            <span className="pip"></span>
+          <div className='first-face' onClick={onClick}>
+            <span className='pip'></span>
           </div>
         )
       case 2:
         return (
-          <div className="second-face" onClick={onClick}>
-            <span className="pip"></span>
-            <span className="pip"></span>
+          <div className='second-face' onClick={onClick}>
+            <span className='pip'></span>
+            <span className='pip'></span>
           </div>
         )
       case 3:
         return (
-          <div className="third-face" onClick={onClick}>
-            <span className="pip"></span>
-            <span className="pip"></span>
-            <span className="pip"></span>
+          <div className='third-face' onClick={onClick}>
+            <span className='pip'></span>
+            <span className='pip'></span>
+            <span className='pip'></span>
           </div>
         )
       case 4:
         return (
-          <div className="fourth-face" onClick={onClick}>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
+          <div className='fourth-face' onClick={onClick}>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
           </div>
         )
       case 5:
         return (
-          <div className="fifth-face" onClick={onClick}>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
+          <div className='fifth-face' onClick={onClick}>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
-            <div className="column">
-              <span className="pip"></span>
+            <div className='column'>
+              <span className='pip'></span>
             </div>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
           </div>
         )
       case 6:
         return (
-          <div className="sixth-face" onClick={onClick}>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
-              <span className="pip"></span>
+          <div className='sixth-face' onClick={onClick}>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
-            <div className="column">
-              <span className="pip"></span>
-              <span className="pip"></span>
-              <span className="pip"></span>
+            <div className='column'>
+              <span className='pip'></span>
+              <span className='pip'></span>
+              <span className='pip'></span>
             </div>
           </div>
         )
@@ -83,19 +82,18 @@ class Die {
 }
 
 class Dice {
-
-  render() {
+  render () {
     const { dice, roll, rolls, hold, heldDice } = this.props
     const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll again</button>
 
     return (
-        <div className="dice">
+        <div className='dice'>
           {dice.map(function (val, idx) {
             const cn = classNames(
               'die-container',
-              {isHeld: _.contains(heldDice,idx)}
+              {isHeld: _.contains(heldDice, idx)}
             )
-            return  (
+            return (
               <div className={cn} key={idx}>
                 <Die
                   number={val}
@@ -109,26 +107,24 @@ class Dice {
   }
 }
 
-
 class Tally {
-  getNumberDisplay(key, scoring, isNewTurn, scoreMarkers) {
+
+  getNumberDisplay (key, scoring, isNewTurn, scoreMarkers) {
     let numDisplay = null
-    if (scoring[key] === null){
+    if (scoring[key] === null) {
       if (isNewTurn) {
-        numDisplay =  '-'
+        numDisplay = '-'
       } else {
         numDisplay = <button onClick={scoreMarkers['score_' + key]}>Score</button>
       }
     } else {
       numDisplay = scoring[key]
     }
-
     return numDisplay
   }
 
-  render() {
+  render () {
     const { scoring, scoreMarkers, isNewTurn } = this.props
-
     return (
       <div>
 
@@ -180,8 +176,6 @@ class Tally {
             <tr>
               <td>Chance</td><td>Score Total Of All 5 Dice</td><td></td>
             </tr>
-
-
           </tbody>
         </table>
     </div>
@@ -189,33 +183,30 @@ class Tally {
   }
 }
 
-
 @connect(state => state.game)
 export class GameBoard {
-  render() {
-    console.log('GAMEBOARD', this.props)
+  render () {
     const { dice, dispatch, rolls, score, scoring, isNewTurn, heldDice } = this.props
-    const { roll, reset, hold } = bindActionCreators(actions, dispatch)
-
+    const { roll, hold } = bindActionCreators(actions, dispatch)
     let gameContent = null
-    if (! dice.length) {
-      if (! score) {
-        gameContent = <div className="dice"><button onClick={roll}>Start Game</button></div>
+
+    if (!dice.length) {
+      if (!score) {
+        gameContent = <div className='dice'><button onClick={roll}>Start Game</button></div>
       } else {
-        gameContent = <div className="dice"><button onClick={roll}>Roll next turn</button></div>
+        gameContent = <div className='dice'><button onClick={roll}>Roll next turn</button></div>
       }
-    }
-    else {
+    } else {
       gameContent = <Dice dice={dice} roll={roll} rolls={rolls} hold={hold} heldDice={heldDice}/>
     }
 
     return (
-      <div className="Grid" id="main">
-        <div className="Grid-cell play-column">
+      <div className='Grid' id='main'>
+        <div className='Grid-cell play-column'>
           {gameContent}
         </div>
-        <div className="Grid-cell Grid--1of3">
-          <div id="score">Score: {score}</div>
+        <div className='Grid-cell Grid--1of3'>
+          <div id='score'>Score: {score}</div>
           <Tally scoring={scoring} scoreMarkers={bindActionCreators(actions, dispatch)} isNewTurn={isNewTurn}/>
         </div>
       </div>

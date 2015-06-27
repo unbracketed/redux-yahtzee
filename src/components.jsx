@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'redux/react'
 import classNames from 'classnames'
 import * as actions from './actions'
-import _defaultStyles from './main.styl'
-import _diceStyles from './dice.css'
-import _gridStyles from './grid.css'
+import _defaultStyles from './styles/main.styl'
+import _diceStyles from './styles/dice.css'
+import _gridStyles from './styles/grid.css'
 
 
 class Die {

@@ -1,15 +1,15 @@
 import React from 'react'
-import { createRedux } from 'redux'
+import { createStore } from 'redux'
 import { Provider } from 'redux/react'
 import gameReducers from './stores'
 import { GameBoard } from './components'
 
-const redux = createRedux({game: gameReducers})
+const store = createStore({game: gameReducers})
 
 class GameApp {
   render () {
     return (
-      <Provider redux={redux}>
+      <Provider store={store}>
         {() => <GameBoard/>}
       </Provider>
     )

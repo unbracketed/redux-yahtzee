@@ -40,9 +40,6 @@ function scoreForNumber (state, key, num) {
   }
 }
 
-
-//TODO hold dice
-
 export default function game (state=initialState, action) {
 
   switch (action.type) {

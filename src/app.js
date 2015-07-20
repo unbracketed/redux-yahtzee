@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import game from './stores'
+import game from './reducers'
 import { GameBoard } from './components'
 
 const store = createStore(game)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
-import { connect } from 'redux/react'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 import _ from 'lodash'
 import * as actions from './actions'
@@ -183,7 +183,7 @@ class Tally {
   }
 }
 
-@connect(state => state.game)
+@connect(state => state)
 export class GameBoard {
   render () {
     const { dice, dispatch, rolls, score, scoring, isNewTurn, heldDice } = this.props

@@ -1,10 +1,10 @@
 import React from 'react'
 import { createStore } from 'redux'
-import { Provider } from 'redux/react'
-import gameReducers from './stores'
+import { Provider } from 'react-redux'
+import game from './stores'
 import { GameBoard } from './components'
 
-const store = createStore({game: gameReducers})
+const store = createStore(game)
 
 class GameApp {
   render () {

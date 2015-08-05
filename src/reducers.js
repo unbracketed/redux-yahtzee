@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import * as constants from './constants'
 
-
 const initialState = {
   score: 0,
   scoring: {
@@ -18,7 +17,7 @@ const initialState = {
   isNewTurn: true
 }
 
-function resetTurn() {
+function resetTurn () {
   return {
     heldDice: [],
     dice: [],
@@ -46,19 +45,19 @@ export default function game (state=initialState, action) {
 
     case constants.ROLL_DICE:
 
-      //TODO handle yahtzee
+      // TODO handle yahtzee
 
       const dice = _.map(_.range(5), (i) => {
         if (_.contains(state.heldDice, i)) {
           return state.dice[i]
         } else {
-          return _.random(1,6)
+          return _.random(1, 6)
         }
       })
 
       const rolls = state.rolls + 1
       let heldDice = null
-      //if the turn is over, mark all dice as held
+      // if the turn is over, mark all dice as held
       if (rolls > 2) {
         heldDice = _.range(5)
       } else {
@@ -74,13 +73,13 @@ export default function game (state=initialState, action) {
       }
 
     case constants.HOLD_DIE:
-      //copy the array, for redux shallow compare
+      // copy the array, for redux shallow compare
       let newHelds = state.heldDice.slice()
       if (_.contains(newHelds, action.index)) {
-        //remove held die
+        // remove held die
         newHelds = _.filter(newHelds, i => i !== action.index)
       } else {
-        //add to held dice
+        // add to held dice
         newHelds.push(action.index)
       }
       return {
@@ -92,7 +91,7 @@ export default function game (state=initialState, action) {
       return {
         ...resetTurn(),
         scoring: initialState.scoring,
-        score: 0,
+        score: 0
       }
 
     case constants.SCORE_ONES:

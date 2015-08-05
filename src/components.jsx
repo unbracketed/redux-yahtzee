@@ -80,6 +80,10 @@ class Die {
     }
   }
 }
+Die.propTypes = {
+  onClick: React.PropTypes.function,
+  number: React.PropTypes.number
+}
 
 class Dice {
   render () {
@@ -105,6 +109,13 @@ class Dice {
         </div>
     )
   }
+}
+Dice.propTypes = {
+  dice: React.PropTypes.array,
+  roll: React.PropTypes.number,
+  rolls: React.PropTypes.number,
+  hold: React.PropTypes.array,
+  heldDice: React.PropTypes.array
 }
 
 class Tally {
@@ -182,10 +193,17 @@ class Tally {
     )
   }
 }
+Tally.propTypes = {
+  isNewTurn: React.PropTypes.bool,
+  scoreMarkers: React.PropTypes.object,
+  scoring: React.PropTypes.object
+}
 
 @connect(state => state)
 export class GameBoard {
+
   render () {
+    console.log(this.props)
     const { dice, dispatch, rolls, score, scoring, isNewTurn, heldDice } = this.props
     const { roll, hold } = bindActionCreators(actions, dispatch)
     let gameContent = null
@@ -212,4 +230,14 @@ export class GameBoard {
       </div>
     )
   }
+}
+GameBoard.propTypes = {
+  number: React.PropTypes.number,
+  dice: React.PropTypes.array,
+  rolls: React.PropTypes.number,
+  score: React.PropTypes.number,
+  scoring: React.PropTypes.object,
+  dispatch: React.PropTypes.function,
+  isNewTurn: React.PropTypes.bool,
+  heldDice: React.PropTypes.array
 }

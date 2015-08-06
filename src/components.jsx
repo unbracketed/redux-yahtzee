@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import _ from 'lodash'
+import R from 'ramda'
 import * as actions from './actions'
 import './styles/main.styl'
 import './styles/dice.css'
@@ -87,15 +87,21 @@ Die.propTypes = {
 
 class Dice {
   render () {
-    const { dice, roll, rolls, hold, heldDice } = this.props
-    const rollButton = rolls === 3 ? '' : <button onClick={roll}>Roll again</button>
+    const {
+      dice,
+      roll,
+      rolls,
+      hold,
+      heldDice
+    } = this.props
+    const heldCheck = R.contains(R.__, heldDice)
 
     return (
         <div className='dice'>
           {dice.map(function (val, idx) {
             const cn = classNames(
               'die-container',
-              {isHeld: _.contains(heldDice, idx)}
+              {isHeld: heldCheck(idx)}
             )
             return (
               <div className={cn} key={idx}>
@@ -105,7 +111,7 @@ class Dice {
               </div>
             )
           })}
-          {rollButton}
+          {rolls !== 3 && <button onClick={roll}>Roll again</button>}
         </div>
     )
   }
@@ -120,7 +126,7 @@ Dice.propTypes = {
 
 class Tally {
 
-  getNumberDisplay (key, scoring, isNewTurn, scoreMarkers) {
+  getNumberDisplay (scoring, isNewTurn, scoreMarkers, key) {
     let numDisplay = null
     if (scoring[key] === null) {
       if (isNewTurn) {
@@ -135,7 +141,13 @@ class Tally {
   }
 
   render () {
-    const { scoring, scoreMarkers, isNewTurn } = this.props
+    const {
+      scoring,
+      scoreMarkers,
+      isNewTurn
+    } = this.props
+    const getNumDisplay = R.curry(this.getNumberDisplay)(scoring, isNewTurn, scoreMarkers)
+
     return (
       <div>
 
@@ -143,22 +155,22 @@ class Tally {
         <table>
           <tbody>
             <tr>
-              <td>Aces = 1</td><td>Count and Add Only Aces</td><td>{this.getNumberDisplay('ones', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Aces = 1</td><td>Count and Add Only Aces</td><td>{getNumDisplay('ones')}</td>
             </tr>
             <tr>
-              <td>Twos = 2</td><td>Count and Add Only Twos</td><td>{this.getNumberDisplay('twos', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Twos = 2</td><td>Count and Add Only Twos</td><td>{getNumDisplay('twos')}</td>
             </tr>
             <tr>
-              <td>Threes = 3</td><td>Count and Add Only Threes</td><td>{this.getNumberDisplay('threes', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Threes = 3</td><td>Count and Add Only Threes</td><td>{getNumDisplay('threes')}</td>
             </tr>
             <tr>
-              <td>Fours = 4</td><td>Count and Add Only Fours</td><td>{this.getNumberDisplay('fours', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Fours = 4</td><td>Count and Add Only Fours</td><td>{getNumDisplay('fours')}</td>
             </tr>
             <tr>
-              <td>Fives = 5</td><td>Count and Add Only Fives</td><td>{this.getNumberDisplay('fives', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Fives = 5</td><td>Count and Add Only Fives</td><td>{getNumDisplay('fives')}</td>
             </tr>
             <tr>
-              <td>Sixes = 6</td><td>Count and Add Only Sixes</td><td>{this.getNumberDisplay('sixes', scoring, isNewTurn, scoreMarkers)}</td>
+              <td>Sixes = 6</td><td>Count and Add Only Sixes</td><td>{getNumDisplay('sixes')}</td>
             </tr>
           </tbody>
         </table>
@@ -218,21 +230,14 @@ export class GameBoard {
     } = bindActionCreators(actions, dispatch)
     let gameContent = null
 
-    if (!dice.length) {
-      if (!score) {
-        gameContent = <div className='dice'><button onClick={roll}>Start Game</button></div>
-      } else {
-        gameContent = <div className='dice'><button onClick={roll}>Roll next turn</button></div>
-      }
-    } else {
-      gameContent = <Dice dice={dice} roll={roll} rolls={rolls} hold={hold} heldDice={heldDice}/>
-    }
-
     return (
       <div className='Grid' id='main'>
         <button onClick={reset}>Start Over</button>
         <div className='Grid-cell play-column'>
-          {gameContent}
+          {dice.length
+            ? <Dice dice={dice} roll={roll} rolls={rolls} hold={hold} heldDice={heldDice}/>
+            : <div className='dice'><button onClick={roll}>{!score ? 'Start Game' : 'Roll next turn'}</button></div>
+          }
         </div>
         <div className='Grid-cell Grid--1of3'>
           <div id='score'>Score: {score}</div>

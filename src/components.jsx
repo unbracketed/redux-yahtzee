@@ -182,7 +182,7 @@ class Tally {
               <td>3 of a kind</td><td>Add Total Of All Dice</td><td>{getNumDisplay('three_of_a_kind')}</td>
             </tr>
             <tr>
-              <td>4 of a kind</td><td>Add Total Of All Dice</td><td></td>
+              <td>4 of a kind</td><td>Add Total Of All Dice</td><td>{getNumDisplay('four_of_a_kind')}</td>
             </tr>
             <tr>
               <td>Full House</td><td>SCORE 25</td><td></td>

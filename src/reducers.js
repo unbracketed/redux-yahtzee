@@ -11,7 +11,8 @@ const initialState = {
     fours: null,
     fives: null,
     sixes: null,
-    three_of_a_kind: null
+    three_of_a_kind: null,
+    four_of_a_kind: null
   },
   heldDice: [],
   dice: [],
@@ -45,6 +46,8 @@ function finishScoringState (state, stat, points) {
     score: state.score + points
   }
 }
+
+const countDiceByNumber = R.countBy(R.identity)
 
 export default function game (state=initialState, action) {
 
@@ -108,14 +111,25 @@ export default function game (state=initialState, action) {
 
     case constants.SCORE_THREE_OF_A_KIND:
       // validate for 3 of a kind
-      const diceByNumber = R.countBy(R.identity)(state.dice)
-      const threeOrMore = R.head(R.filter(k => byNum[k] >= 3, Object.keys(diceByNumber)))
+      const diceByNum3 = countDiceByNumber(state.dice)
+      const threeOrMore = R.head(R.filter(k => diceByNum3[k] >= 3, Object.keys(diceByNum3)))
       if (!threeOrMore) {
         console.log('cannot score')
         return state
       }
       // score all dice
       return finishScoringState(state, 'three_of_a_kind', R.sum(state.dice))
+
+    case constants.SCORE_FOUR_OF_A_KIND:
+      // validate for four of a kind
+      const diceByNum4 = countDiceByNumber(state.dice)
+      const fourOrMore = R.head(R.filter(k => diceByNum4[k] >= 4, Object.keys(diceByNum4)))
+      if (!fourOrMore) {
+        console.log('cannot score')
+        return state
+      }
+      // score all dice
+      return finishScoringState(state, 'four_of_a_kind', R.sum(state.dice))
 
     default:
       return state

@@ -234,13 +234,13 @@ export class GameBoard {
         <button onClick={reset}>Start Over</button>
         <div className='Grid-cell play-column'>
           {dice.length
-            ? <Dice dice={dice} roll={roll} rolls={rolls} hold={hold} heldDice={heldDice}/>
+            ? <Dice {...{dice, roll, rolls, hold, heldDice}}/>
             : <div className='dice'><button onClick={roll}>{!score ? 'Start Game' : 'Roll next turn'}</button></div>
           }
         </div>
         <div className='Grid-cell Grid--1of3'>
           <div id='score'>Score: {score}</div>
-          <Tally scoring={scoring} scoreMarkers={bindActionCreators(actions, dispatch)} isNewTurn={isNewTurn}/>
+          <Tally scoreMarkers={bindActionCreators(actions, dispatch)} {...{scoring, isNewTurn}}/>
         </div>
       </div>
     )

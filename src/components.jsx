@@ -201,11 +201,21 @@ Tally.propTypes = {
 
 @connect(state => state)
 export class GameBoard {
-
   render () {
-    console.log(this.props)
-    const { dice, dispatch, rolls, score, scoring, isNewTurn, heldDice } = this.props
-    const { roll, hold } = bindActionCreators(actions, dispatch)
+    const {
+      dice,
+      dispatch,
+      rolls,
+      score,
+      scoring,
+      isNewTurn,
+      heldDice
+    } = this.props
+    const {
+      roll,
+      hold,
+      reset
+    } = bindActionCreators(actions, dispatch)
     let gameContent = null
 
     if (!dice.length) {
@@ -220,6 +230,7 @@ export class GameBoard {
 
     return (
       <div className='Grid' id='main'>
+        <button onClick={reset}>Start Over</button>
         <div className='Grid-cell play-column'>
           {gameContent}
         </div>

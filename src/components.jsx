@@ -81,7 +81,7 @@ class Die {
   }
 }
 Die.propTypes = {
-  onClick: React.PropTypes.function,
+  onClick: React.PropTypes.func,
   number: React.PropTypes.number
 }
 
@@ -118,9 +118,9 @@ class Dice {
 }
 Dice.propTypes = {
   dice: React.PropTypes.array,
-  roll: React.PropTypes.number,
+  roll: React.PropTypes.func,
   rolls: React.PropTypes.number,
-  hold: React.PropTypes.array,
+  hold: React.PropTypes.func,
   heldDice: React.PropTypes.array
 }
 
@@ -228,7 +228,6 @@ export class GameBoard {
       hold,
       reset
     } = bindActionCreators(actions, dispatch)
-    let gameContent = null
 
     return (
       <div className='Grid' id='main'>
@@ -253,7 +252,7 @@ GameBoard.propTypes = {
   rolls: React.PropTypes.number,
   score: React.PropTypes.number,
   scoring: React.PropTypes.object,
-  dispatch: React.PropTypes.function,
+  dispatch: React.PropTypes.func,
   isNewTurn: React.PropTypes.bool,
   heldDice: React.PropTypes.array
 }

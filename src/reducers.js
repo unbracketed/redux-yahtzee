@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import R from 'ramda'
 import * as constants from './constants'
 
 const initialState = {
@@ -27,7 +28,8 @@ function resetTurn () {
 }
 
 function scoreForNumber (state, key, num) {
-  const scoreFor = _.sum(_.filter(state.dice, n => n === num))
+  const sameNum = R.filter(n => n === num)
+  const scoreFor = R.sum(sameNum(state.dice))
   return {
     ...state,
     ...resetTurn(),
@@ -39,45 +41,33 @@ function scoreForNumber (state, key, num) {
   }
 }
 
+
 export default function game (state=initialState, action) {
 
   switch (action.type) {
 
     case constants.ROLL_DICE:
 
-      // TODO handle yahtzee
-
-      const dice = _.map(_.range(5), (i) => {
-        if (_.contains(state.heldDice, i)) {
-          return state.dice[i]
-        } else {
-          return _.random(1, 6)
-        }
-      })
-
+      const diceRange = R.range(0, 5)
+      const getDice = R.map(i => R.contains(i, state.heldDice)
+        ? state.dice[i]
+        : _.random(1, 6))
       const rolls = state.rolls + 1
-      let heldDice = null
-      // if the turn is over, mark all dice as held
-      if (rolls > 2) {
-        heldDice = _.range(5)
-      } else {
-        heldDice = state.heldDice
-      }
 
       return {
         ...state,
         rolls,
         isNewTurn: false,
-        dice,
-        heldDice
+        dice: getDice(diceRange),
+        heldDice: rolls > 2 ? diceRange : state.heldDice
       }
 
     case constants.HOLD_DIE:
       // copy the array, for redux shallow compare
       let newHelds = state.heldDice.slice()
-      if (_.contains(newHelds, action.index)) {
+      if (R.contains(action.index, newHelds)) {
         // remove held die
-        newHelds = _.filter(newHelds, i => i !== action.index)
+        newHelds = R.filter(i => i !== action.index, newHelds)
       } else {
         // add to held dice
         newHelds.push(action.index)

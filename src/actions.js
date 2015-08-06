@@ -9,3 +9,4 @@ export function score_threes () {return {type: constants.SCORE_THREES}}
 export function score_fours () {return {type: constants.SCORE_FOURS}}
 export function score_fives () {return {type: constants.SCORE_FIVES}}
 export function score_sixes () {return {type: constants.SCORE_SIXES}}
+export function score_three_of_a_kind () {return {type: constants.SCORE_THREE_OF_A_KIND}}

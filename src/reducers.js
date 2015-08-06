@@ -10,7 +10,8 @@ const initialState = {
     threes: null,
     fours: null,
     fives: null,
-    sixes: null
+    sixes: null,
+    three_of_a_kind: null
   },
   heldDice: [],
   dice: [],
@@ -30,17 +31,20 @@ function resetTurn () {
 function scoreForNumber (state, key, num) {
   const sameNum = R.filter(n => n === num)
   const scoreFor = R.sum(sameNum(state.dice))
+  return finishScoringState(state, key, scoreFor)
+}
+
+function finishScoringState (state, stat, points) {
   return {
     ...state,
     ...resetTurn(),
     scoring: {
       ...state.scoring,
-      [key]: scoreFor
+      [stat]: points
     },
-    score: state.score + scoreFor
+    score: state.score + points
   }
 }
-
 
 export default function game (state=initialState, action) {
 
@@ -101,6 +105,17 @@ export default function game (state=initialState, action) {
 
     case constants.SCORE_SIXES:
       return scoreForNumber(state, 'sixes', 6)
+
+    case constants.SCORE_THREE_OF_A_KIND:
+      // validate for 3 of a kind
+      const diceByNumber = R.countBy(R.identity)(state.dice)
+      const threeOrMore = R.head(R.filter(k => byNum[k] >= 3, Object.keys(diceByNumber)))
+      if (!threeOrMore) {
+        console.log('cannot score')
+        return state
+      }
+      // score all dice
+      return finishScoringState(state, 'three_of_a_kind', R.sum(state.dice))
 
     default:
       return state

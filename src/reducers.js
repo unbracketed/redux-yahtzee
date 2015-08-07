@@ -13,7 +13,8 @@ const initialState = {
     sixes: null,
     three_of_a_kind: null,
     four_of_a_kind: null,
-    full_house: null
+    full_house: null,
+    small_run: null
   },
   heldDice: [],
   dice: [],
@@ -135,14 +136,35 @@ export default function game (state=initialState, action) {
     case constants.SCORE_FULL_HOUSE:
       // validate full House
       const fhDice = R.values(countDiceByNumber(state.dice))
-      if ((fhDice[0] === 2 && fhDice[1] === 3)
-      || (fhDice[0] === 3 && fhDice[1] === 2)) {
+      if ((fhDice[0] === 2 && fhDice[1] === 3) ||
+      (fhDice[0] === 3 && fhDice[1] === 2)) {
         // Full House scores 25
         return finishScoringState(state, 'full_house', 25)
       } else {
         console.log('cannot score')
         return state
       }
+      break
+
+    case constants.SCORE_SMALL_RUN:
+      // validate small run
+      const sortedCopy = state.dice.slice().sort((a, b) => a - b)
+      const sdice = R.uniq(sortedCopy)
+      const slices = R.aperture(4, sdice)
+      const possibleRuns = [
+        [1, 2, 3, 4],
+        [2, 3, 4, 5],
+        [3, 4, 5, 6]
+      ]
+      const isRun = R.contains(R.__, possibleRuns)
+      if (R.any(isRun)(slices)) {
+        // small run scores 30
+        return finishScoringState(state, 'small_run', 30)
+      } else {
+        console.log('cannot score')
+        return state
+      }
+      break
 
     default:
       return state

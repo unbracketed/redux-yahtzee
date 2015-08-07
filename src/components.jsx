@@ -198,7 +198,7 @@ class Tally {
               <td>Full House</td><td>SCORE 25</td><td>{getNumDisplay('full_house')}</td>
             </tr>
             <tr>
-              <td>Sm. Straight (sequence of 4)</td><td>SCORE 30</td><td></td>
+              <td>Sm. Straight (sequence of 4)</td><td>SCORE 30</td><td>{getNumDisplay('small_run')}</td>
             </tr>
             <tr>
               <td>Sm. Straight (sequence of 5)</td><td>SCORE 40</td><td></td>

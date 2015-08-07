@@ -185,7 +185,7 @@ class Tally {
               <td>4 of a kind</td><td>Add Total Of All Dice</td><td>{getNumDisplay('four_of_a_kind')}</td>
             </tr>
             <tr>
-              <td>Full House</td><td>SCORE 25</td><td></td>
+              <td>Full House</td><td>SCORE 25</td><td>{getNumDisplay('full_house')}</td>
             </tr>
             <tr>
               <td>Sm. Straight (sequence of 4)</td><td>SCORE 30</td><td></td>

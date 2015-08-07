@@ -12,7 +12,8 @@ const initialState = {
     fives: null,
     sixes: null,
     three_of_a_kind: null,
-    four_of_a_kind: null
+    four_of_a_kind: null,
+    full_house: null
   },
   heldDice: [],
   dice: [],
@@ -130,6 +131,18 @@ export default function game (state=initialState, action) {
       }
       // score all dice
       return finishScoringState(state, 'four_of_a_kind', R.sum(state.dice))
+
+    case constants.SCORE_FULL_HOUSE:
+      // validate full House
+      const fhDice = R.values(countDiceByNumber(state.dice))
+      if ((fhDice[0] === 2 && fhDice[1] === 3)
+      || (fhDice[0] === 3 && fhDice[1] === 2)) {
+        // Full House scores 25
+        return finishScoringState(state, 'full_house', 25)
+      } else {
+        console.log('cannot score')
+        return state
+      }
 
     default:
       return state

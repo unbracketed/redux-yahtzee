@@ -9,6 +9,12 @@ import './styles/dice.css'
 import './styles/grid.css'
 
 class Die {
+
+  static propTypes = {
+    onClick: React.PropTypes.func,
+    number: React.PropTypes.number
+  }
+
   render () {
     const { onClick } = this.props
     switch (this.props.number) {
@@ -80,12 +86,17 @@ class Die {
     }
   }
 }
-Die.propTypes = {
-  onClick: React.PropTypes.func,
-  number: React.PropTypes.number
-}
 
 class Dice {
+
+  static propTypes = {
+    dice: React.PropTypes.array,
+    roll: React.PropTypes.func,
+    rolls: React.PropTypes.number,
+    hold: React.PropTypes.func,
+    heldDice: React.PropTypes.array
+  }
+
   render () {
     const {
       dice,
@@ -116,15 +127,14 @@ class Dice {
     )
   }
 }
-Dice.propTypes = {
-  dice: React.PropTypes.array,
-  roll: React.PropTypes.func,
-  rolls: React.PropTypes.number,
-  hold: React.PropTypes.func,
-  heldDice: React.PropTypes.array
-}
 
 class Tally {
+
+  static propTypes = {
+    isNewTurn: React.PropTypes.bool,
+    scoreMarkers: React.PropTypes.object,
+    scoring: React.PropTypes.object
+  }
 
   getNumberDisplay (scoring, isNewTurn, scoreMarkers, key) {
     let numDisplay = null
@@ -205,14 +215,21 @@ class Tally {
     )
   }
 }
-Tally.propTypes = {
-  isNewTurn: React.PropTypes.bool,
-  scoreMarkers: React.PropTypes.object,
-  scoring: React.PropTypes.object
-}
 
 @connect(state => state)
 export class GameBoard {
+
+  static propTypes = {
+    number: React.PropTypes.number,
+    dice: React.PropTypes.array,
+    rolls: React.PropTypes.number,
+    score: React.PropTypes.number,
+    scoring: React.PropTypes.object,
+    dispatch: React.PropTypes.func,
+    isNewTurn: React.PropTypes.bool,
+    heldDice: React.PropTypes.array
+  }
+
   render () {
     const {
       dice,
@@ -245,14 +262,4 @@ export class GameBoard {
       </div>
     )
   }
-}
-GameBoard.propTypes = {
-  number: React.PropTypes.number,
-  dice: React.PropTypes.array,
-  rolls: React.PropTypes.number,
-  score: React.PropTypes.number,
-  scoring: React.PropTypes.object,
-  dispatch: React.PropTypes.func,
-  isNewTurn: React.PropTypes.bool,
-  heldDice: React.PropTypes.array
 }

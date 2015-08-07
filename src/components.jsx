@@ -201,7 +201,7 @@ class Tally {
               <td>Sm. Straight (sequence of 4)</td><td>SCORE 30</td><td>{getNumDisplay('small_run')}</td>
             </tr>
             <tr>
-              <td>Sm. Straight (sequence of 5)</td><td>SCORE 40</td><td></td>
+              <td>Lg. Straight (sequence of 5)</td><td>SCORE 40</td><td>{getNumDisplay('large_run')}</td>
             </tr>
             <tr>
               <td>REDUXEE</td><td>SCORE 50</td><td></td>

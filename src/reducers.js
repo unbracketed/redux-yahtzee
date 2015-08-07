@@ -14,7 +14,8 @@ const initialState = {
     three_of_a_kind: null,
     four_of_a_kind: null,
     full_house: null,
-    small_run: null
+    small_run: null,
+    large_run: null
   },
   heldDice: [],
   dice: [],
@@ -164,6 +165,27 @@ export default function game (state=initialState, action) {
         console.log('cannot score')
         return state
       }
+      break
+
+    case constants.SCORE_LARGE_RUN:
+      // validate large run
+      return (function () {
+        const sortedCopy = state.dice.slice().sort((a, b) => a - b)
+        const sdice = R.uniq(sortedCopy)
+        const slices = R.aperture(5, sdice)
+        const possibleRuns = [
+          [1, 2, 3, 4, 5],
+          [2, 3, 4, 5, 6]
+        ]
+        const isRun = R.contains(R.__, possibleRuns)
+        if (R.any(isRun)(slices)) {
+          // small run scores 40
+          return finishScoringState(state, 'large_run', 40)
+        } else {
+          console.log('cannot score')
+          return state
+        }
+      })();
       break
 
     default:

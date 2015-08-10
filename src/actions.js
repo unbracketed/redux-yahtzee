@@ -14,3 +14,4 @@ export function score_four_of_a_kind () {return {type: constants.SCORE_FOUR_OF_A
 export function score_full_house () {return {type: constants.SCORE_FULL_HOUSE}}
 export function score_small_run () {return {type: constants.SCORE_SMALL_RUN}}
 export function score_large_run () {return {type: constants.SCORE_LARGE_RUN}}
+export function score_reduxee () {return {type: constants.SCORE_REDUXEE}}

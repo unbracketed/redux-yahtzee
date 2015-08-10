@@ -15,7 +15,8 @@ const initialState = {
     four_of_a_kind: null,
     full_house: null,
     small_run: null,
-    large_run: null
+    large_run: null,
+    reduxee: null
   },
   heldDice: [],
   dice: [],
@@ -187,6 +188,19 @@ export default function game (state=initialState, action) {
         }
       })();
       break
+
+    case constants.SCORE_REDUXEE:
+
+      const aDie = state.dice[0]
+      if (R.all(dice => dice === aDie, state.dice)) {
+        // reduxee scores 50
+        return finishScoringState(state, 'reduxee', 50)
+      } else {
+        console.log('cannot score')
+        return state
+      }
+      break
+
 
     default:
       return state

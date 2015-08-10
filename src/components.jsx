@@ -222,7 +222,7 @@ class Tally {
               <td>Lg. Straight (sequence of 5)</td><td>SCORE 40</td><td>{getNumDisplay('large_run')}</td>
             </tr>
             <tr>
-              <td>REDUXEE</td><td>SCORE 50</td><td></td>
+              <td>REDUXEE</td><td>SCORE 50</td><td>{getNumDisplay('reduxee')}</td>
             </tr>
             <tr>
               <td>Chance</td><td>Score Total Of All 5 Dice</td><td></td>

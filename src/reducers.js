@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import R from 'ramda'
 import * as constants from './constants'
 
@@ -52,6 +51,12 @@ function finishScoringState (state, stat, points) {
   }
 }
 
+// Returns a random integer between min (included) and max (excluded)
+// Using Math.round() will give you a non-uniform distribution!
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 const countDiceByNumber = R.countBy(R.identity)
 
 export default function game (state=initialState, action) {
@@ -63,7 +68,7 @@ export default function game (state=initialState, action) {
       const diceRange = R.range(0, 5)
       const getDice = R.map(i => R.contains(i, state.heldDice)
         ? state.dice[i]
-        : _.random(1, 6))
+        : getRandomInt(1, 6))
       const rolls = state.rolls + 1
 
       return {

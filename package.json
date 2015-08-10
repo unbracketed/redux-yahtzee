@@ -21,7 +21,6 @@
     "file-loader": "^0.8.4",
     "hjs-webpack": "^2.12.2",
     "json-loader": "^0.5.2",
-    "lodash": "^3.10.1",
     "node-libs-browser": "^0.5.2",
     "postcss-loader": "^0.5.1",
     "ramda": "^0.17.1",

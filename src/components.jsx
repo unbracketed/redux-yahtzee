@@ -225,7 +225,7 @@ class Tally {
               <td>REDUXEE</td><td>SCORE 50</td><td>{getNumDisplay('reduxee')}</td>
             </tr>
             <tr>
-              <td>Chance</td><td>Score Total Of All 5 Dice</td><td></td>
+              <td>Chance</td><td>Score Total Of All 5 Dice</td><td>{getNumDisplay('chance')}</td>
             </tr>
           </tbody>
         </table>

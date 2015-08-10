@@ -16,7 +16,8 @@ const initialState = {
     full_house: null,
     small_run: null,
     large_run: null,
-    reduxee: null
+    reduxee: null,
+    chance: null
   },
   heldDice: [],
   dice: [],
@@ -200,6 +201,9 @@ export default function game (state=initialState, action) {
         return state
       }
       break
+
+    case constants.SCORE_CHANCE:
+      return finishScoringState(state, 'chance', R.sum(state.dice))
 
 
     default:

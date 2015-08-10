@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import R from 'ramda'
-import * as actions from './actions'
+import * as actionCreators from './actions'
 import './styles/main.styl'
 import './styles/dice.css'
 import './styles/grid.css'
@@ -87,22 +87,40 @@ class Die {
   }
 }
 
+@connect(
+  state => ({
+    dice: state.dice,
+    rolls: state.rolls,
+    heldDice: state.heldDice
+  }),
+  dispatch => {
+    const {
+      roll,
+      hold
+    } = actionCreators
+    const boundHolds = [0, 1, 2, 3, 4].map(i => ['hold'+i, hold.bind(null, i)])
+    return {
+      actions: {
+        ...bindActionCreators(R.fromPairs(boundHolds), dispatch),
+        ...bindActionCreators({roll}, dispatch)
+      }
+    }
+  }
+)
 class Dice {
 
   static propTypes = {
     dice: React.PropTypes.array,
-    roll: React.PropTypes.func,
     rolls: React.PropTypes.number,
-    hold: React.PropTypes.func,
-    heldDice: React.PropTypes.array
+    heldDice: React.PropTypes.array,
+    actions: React.PropTypes.object
   }
 
   render () {
     const {
       dice,
-      roll,
+      actions,
       rolls,
-      hold,
       heldDice
     } = this.props
     const heldCheck = R.contains(R.__, heldDice)
@@ -118,11 +136,11 @@ class Dice {
               <div className={cn} key={idx}>
                 <Die
                   number={val}
-                  onClick={hold.bind(null, idx)}/>
+                  onClick={actions['hold' + idx]}/>
               </div>
             )
           })}
-          {rolls !== 3 && <button onClick={roll}>Roll again</button>}
+          {rolls !== 3 && <button onClick={actions.roll}>Roll again</button>}
         </div>
     )
   }
@@ -244,20 +262,20 @@ export class GameBoard {
       roll,
       hold,
       reset
-    } = bindActionCreators(actions, dispatch)
+    } = bindActionCreators(actionCreators, dispatch)
 
     return (
       <div className='Grid' id='main'>
         <button onClick={reset}>Start Over</button>
         <div className='Grid-cell play-column'>
           {dice.length
-            ? <Dice {...{dice, roll, rolls, hold, heldDice}}/>
+            ? <Dice/>
             : <div className='dice'><button onClick={roll}>{!score ? 'Start Game' : 'Roll next turn'}</button></div>
           }
         </div>
         <div className='Grid-cell Grid--1of3'>
           <div id='score'>Score: {score}</div>
-          <Tally scoreMarkers={bindActionCreators(actions, dispatch)} {...{scoring, isNewTurn}}/>
+          <Tally scoreMarkers={bindActionCreators(actionCreators, dispatch)} {...{scoring, isNewTurn}}/>
         </div>
       </div>
     )

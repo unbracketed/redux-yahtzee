@@ -53,8 +53,8 @@ function finishScoringState (state, stat, points) {
 
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+function getRandomInt (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min
 }
 
 const countDiceByNumber = R.countBy(R.identity)
@@ -175,8 +175,8 @@ export default function game (state=initialState, action) {
       break
 
     case constants.SCORE_LARGE_RUN:
-      // validate large run
-      return (function () {
+      {
+        // validate large run
         const sortedCopy = state.dice.slice().sort((a, b) => a - b)
         const sdice = R.uniq(sortedCopy)
         const slices = R.aperture(5, sdice)
@@ -192,8 +192,8 @@ export default function game (state=initialState, action) {
           console.log('cannot score')
           return state
         }
-      })();
-      break
+        break
+      }
 
     case constants.SCORE_REDUXEE:
 
@@ -209,7 +209,6 @@ export default function game (state=initialState, action) {
 
     case constants.SCORE_CHANCE:
       return finishScoringState(state, 'chance', R.sum(state.dice))
-
 
     default:
       return state

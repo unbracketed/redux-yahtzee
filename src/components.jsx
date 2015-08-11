@@ -98,7 +98,7 @@ class Die {
       roll,
       hold
     } = actionCreators
-    const boundHolds = [0, 1, 2, 3, 4].map(i => ['hold'+i, hold.bind(null, i)])
+    const boundHolds = [0, 1, 2, 3, 4].map(i => ['hold' + i, hold.bind(null, i)])
     return {
       actions: {
         ...bindActionCreators(R.fromPairs(boundHolds), dispatch),
@@ -252,15 +252,12 @@ export class GameBoard {
     const {
       dice,
       dispatch,
-      rolls,
       score,
       scoring,
-      isNewTurn,
-      heldDice
+      isNewTurn
     } = this.props
     const {
       roll,
-      hold,
       reset
     } = bindActionCreators(actionCreators, dispatch)
 
